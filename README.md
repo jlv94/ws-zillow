@@ -1,4 +1,4 @@
-Hello!
+Hello,
 
 This is my first complete project in python to feed a database from webscrapping.
 
