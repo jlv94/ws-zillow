@@ -61,7 +61,7 @@ However, this is a first project and there is always room for improvement, such 
 If you have any question or recommandation I'm all in to learn and share with others.
 Please contact me at jonathanverschaeve94@gmail.com
 
-Thanks for your interest.
+Thanks for your interest
 
 
 
