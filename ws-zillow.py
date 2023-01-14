@@ -288,20 +288,29 @@ for zip_code in data_address:
 	zip_code = zip_code[3:]
 	data_zip.append(zip_code)
 
-
-#Build dataframe
+#Dataframe
 df_columns=["id", "type", "price", "address", "beds", "bads", "sqft", "street", "city", "state", "zip_code","agency", "property_url", "image_1_url"]
-df = pd.DataFrame(list(zip(data_id, data_types, data_prices, data_address, data_beds, data_bads, data_sqft, data_street, data_city, data_state, data_zip, data_agency, data_url, data_image)), columns=df_columns)
+df = pd.DataFrame(list(zip(data_id, data_types, data_prices, data_address, data_beds, data_bads, data_sqft, data_street, data_city, data_state, \
+							data_zip, data_agency, data_url, data_image)), columns=df_columns)
 
-#Connection to sqlite3 database
-db_con = sqlite3.connect("real_estate.db")
-# db_cursor = sqlite3.cursor()
+#Drop duplicated listing
+df = df.drop_duplicates(subset=["id"])
 
+#Database connection
+db_conn = sqlite3.connect("real_estate.db")
+db_cursor = db_conn.cursor()
 
 #Create table if it does not already exist
-db_con.execute("CREATE TABLE IF NOT EXISTS real_estate(id TEXT PRIMARY KEY NOT NULL, type TEXT, price INT, address TEXT, beds INT, bads INT, sqft INT, street TEXT, city TEXT, state TEXT, zip_code TEXT, agency TEXT, property_url TEXT, image_1_url TEXT)")
+create_table = ("CREATE TABLE IF NOT EXISTS real_estate(id TEXT PRIMARY KEY NOT NULL UNIQUE, \
+				type TEXT, price INT, address TEXT, beds INT, bads INT, sqft INT, street TEXT, city TEXT, state TEXT, \
+				zip_code TEXT, agency TEXT, property_url TEXT, image_1_url TEXT)")
 
-#Next, insert data to data base
-df.to_sql("real_estate", con=db_con, if_exists="append", index=False, dtype={"id" : "TEXT PRIMARY KEY NOT NULL"})
-db_con.commit()
-db_con.close()
+db_cursor.execute(create_table)
+
+#Insert new data to data base
+df.to_sql("real_estate", con=db_conn, if_exists="append", index=False)
+
+db_conn.commit()
+db_conn.close()
+
+print("Script is done for ", city)
