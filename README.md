@@ -1,52 +1,67 @@
-Hello,
-
-# Intro
-This is my first project in python to scrap a webpage and store valuable data in a database.
-The purpose of this project is educational only.
+# Disclaimer
+The purpose of this project is purely educational.
+There is no intention to frequently run the script, nor to store tremendous amount of data. There is no intention to sell the data or the script nor to make a profit out of this project.
 
 
 # Scope of the project
-The script scraps the web real estate Zillow website for data to populate a listing database.
+In this project I learned how to:
+* Write a python program to scrap webpage and with library such as Pandas, Request and BeautifulSoup
+* Understand the concept of CSS Dynamics and counter this problem with a script that actually scrap the new name of css classes
+* Clean scrapped data with Regex
+* Create a new sqlite database, assign primary key and add the scrapped data to it
+* Create example of SQL requests to get value out of the database
+* Use create a repo in GitHub and use the Terminal to push the project
 
 
-# Explaination of the script
-The script is divided in 3 parts:
 
-## Counter Zillow's use of CSS Dynamic tags
-I noticed the website uses CSS Dynamic tags. This means that part of the _class name_ within a HTML tag changes frequently.
-The first part of the script stores the latests class name of the tag by localising its index. This helps make the code robust agains Dynamic CSS. It can then run without having to change the _class name_ in the code everytime it is run.
+## Part I - Counter Zillow's use of CSS Dynamic tags
+I noticed the website uses CSS Dynamic tags. This means that part of the _class name_ within a HTML tag can change frequently.
+The first part of the script stores the latests _class name_ of the tag. To do so, I decided to localyse the index of the tag as the main structure stay the same over time. Doing so, I return and store in a list the (latest) value of a particular index.
 
 
-## Scrap valuable data with Beautiful Soup 4
-Next, once the script knows the latest class name of DOM tags, the script starts scrapping for data.
+## Part II - Scrap data with Beautiful Soup 4
+The script reads the first page of a city we'd like to scrap property information with respect of the _class name_ gained in Part I. 
 
-Thas is:
-1. It collects the number total page to scrap (ie., `max_page`).
-2. Next, it creates a list of url for every page up to `max_page` for the requested city and state.
-3. Next, it iterates on every page and scrap the data that is then stored in list
-
-
-### Create a Data Frame with Pandas and store data in a SQLite database
-Eventually, the script creates a Data Frame with the various list of data scrapped.
-If the database is not yet create, it creates it. Otherwise, it appends the freshly scrapped data to the database.
+**Building a list of urls**
+First, the script returns the max page listed on the site for the city in a variable `max_page`.
+Then, it iteratively builds ulrl from page 1 up to `max_page` and stores it in a list (`url_list`). 
+The structure of the url is: zillow.com/city-state/`x_p`, with `x` the page number.
 
 
-# Educational take-aways from this project
-This project is my first major project in Python and first one in webscrapping.
-I had fun sharpening my skills in Python, using the Terminal to run and debug code, use StackOverFlow and any other plateforme online to help me find solution to bugs, understand webscrapping and DOM.
+**Scrap interatively**
+Next, for every url the script scrap data, looking at the _class name_ found in Part I. Data is stored in appropriate list (ie., `data_id` stores the property ID ; `data_prices` stores the property price). This will set us up to build a data frame later on.
 
 
-# Ways to improve the code and follow-up of project.
-- Optimize speed of the code (through classes and inheritances).
-- Improve code readibility and documentation.
-- Add a sys functionality to run code from commande line.
-- Connect database to a visualization tool (eg., Tableau or PowerBi). Create some visualization.
+**Clean data within list**
+Some data scraped need to be clean. For examples:
+* The tag containing the information of the number of beds, bads and square foot is the same. Therefore the data therein is concatenate. The script first separate it (func `clean_data_info`) and then store the data in its corresponding list by slicing the items index within the list. That is, info of beds, bads and sqft are stored in the `data_info`list. After apply the function, we have a list of `[3 beds 4 bads 1,230 sqft, ...]`. I use the index position of every item within the list (which has always the same structure) to assign the number of beds to a `data_bed` list, and so on.
+* Same schema applys to the `data_address` list which contains the full address. For analysis purposes, it may be usefule to split the street name to its zip code and city. The script iterates over every item of `data_address` list to build up new list such as `data_street`, `data_city` or `data_zip`.
+
+
+**Building the data frame**
+Next, the script creates a Data Frame using a list of columns (`df_columns`) and the various lists containing the data.
+
+
+**Storing data in a sqlite database**
+Eventually, the script creates a sqlite database and store the dataframe in it.
+
+
+
+## Ways to improve the project
+Again, my goal was to learn the basics of webscraping and using sql to store data.
+However, this is a first project and there is always room for improvement, such as to:
+* Imprive speed and readability of the code, through code optimization, usage of classes and inheritances
+* Add a sys functionality to run code from commande line
+* Improve versatility of code to ensure any request of city scraping would actually work
+* Write code to check the quality of any modification
+* ...
 
 
 # Contact
-For any enquiry on this project, please contact me at jonathanverschaeve94@gmail.com.
+If you have any question or recommandation I'm all in to learn and share with others.
+Please contact me at jonathanverschaeve94@gmail.com
+
+Thanks for your interest.
 
 
-Thanks for your interest,
-Jonathan Verschaeve
 
