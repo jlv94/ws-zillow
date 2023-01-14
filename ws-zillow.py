@@ -103,8 +103,10 @@ class_pic = class_pic[class_pic.find("class")+7:class_pic.find('" src')]
 
 
 #Build Zillow url to scrap
-city = "Kamloops"
-state = "BC"
+city = input("Which city? ") 
+state = input("Which state (abb. format)? ")
+
+print("Script is scrapping data for ", city, " in ", state)
 
 url_std = "https://www.zillow.com/" + city.lower() + "-" + state.lower() + "/1_p"
 header = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"}
