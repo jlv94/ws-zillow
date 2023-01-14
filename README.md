@@ -42,8 +42,9 @@ Some data scraped need to be clean. For examples:
 Next, the script creates a Data Frame using a list of columns (`df_columns`) and the various lists containing the data.
 
 
-**Storing data in a sqlite database**
-Eventually, the script creates a sqlite database and store the dataframe in it.
+**Storing data in a local sqlite database**
+Next, the script creates a sqlite database - if there is none already - and stores data from the dataframe in it. The sqlite database is created in the same folder as the python script.
+The table name is `real_estate` and the primary key is set to be the property id number. 
 
 
 
